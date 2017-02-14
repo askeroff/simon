@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css?family=Sansita');
+
+
+* {
+  margin:  0;
+  padding: 0;
+}
+
+body {
+  background-color:  #cdc1b4;
+  font-size: 16px;
+  font-family: 'Sansita', sans-serif;
+
+}
+
+input[type="button"]:hover {
+  cursor: pointer;
+}
+
+.content {
+  width:  80%;
+  margin: 0 auto;
+}
+
+.site-title {
+  text-align: center;
+  margin: 10px 0px;
+}
+
+.controls {
+  background-color:  #4e5d6c;
+  padding: 10px;
+  margin-top: 25px;
+}
+
+.countdisplay {
+  width: 40px;
+  height: 30px;
+  line-height: 30px;
+  border: 3px solid #666;
+  background-color:#32050c;
+  text-align: center;
+  margin: 10px auto;
+  color: #fff;
+}
+
+.buttons {
+  width: 120px;
+  margin: 10px auto;
+  color: #fff;
+}
+
+.startbutton {
+  background: #ac0b24;
+  color: #fff;
+  width: 60px;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #333;
+  border-radius: 10px;
+}
+
+.power {
+  text-align: center;
+  color:  #fff;
+}
