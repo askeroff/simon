@@ -5,25 +5,43 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Simon&reg; Game</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/simon.js" type="text/javascript"></script>
 </head>
 <body>
 
 <div class="content">
   <h1 class="site-title">The Simon<sup>&reg;</sup> Game</h1>
   
-  <div class="controls">
-    <p class="countdisplay">--</p>
-    <p class="buttons">
-      <input type="button" class="startbutton" value="Start">
-      <label for="strict"><input type="checkbox" name="strict"> Strict</label>
-    </p>
-    <p class="power">
-      <label for="poweron"><input type="checkbox" name="poweron"> On/Off</label>
-    </p>
+  <div class="device">
+    <div class="simongame">
+      <div class="upper-part">
+        <div class="left green-block block"></div>
+        <div class="right red-block block"></div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="bottom-part">
+        <div class="left yellow-block block"></div>
+        <div class="right blue-block block"></div>
+        <div class="clear"></div>
+      </div>
+      
+    </div>
+
+    <div class="controls">
+      <p class="countdisplay">--</p>
+      <p class="buttons">
+        <input type="button" class="startbutton" id="start" value="Start">
+        <label for="strict"><input type="checkbox" id="strict"> Strict</label>
+      </p>
+      <p class="power">
+        <label for="poweron"><input type="checkbox" id="poweron"> On/Off</label>
+      </p>
+    </div>
   </div>
 
 </div>
-  
+
+
+<script src="js/simon.js" type="text/javascript"></script>
 </body>
 </html>
