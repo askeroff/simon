@@ -97,6 +97,13 @@ input[type="button"]:hover {
   float: right;
 }
 
+
+.info {
+  color: #f3f3f3;
+  text-align: center;
+  font-size: 22px;
+}
+
 .block {
   width: 180px;
   height: 110px;

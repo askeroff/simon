@@ -11,28 +11,77 @@
   const redBlock = document.querySelector(".red-block");
   const yellowBlock = document.querySelector(".yellow-block");
   const blueBlock = document.querySelector(".blue-block");
+  const countdisplay = document.querySelector(".countdisplay");
+  const info = document.querySelector(".info");
 
   // game state
 
-  let state = {
+  let defaultState = {
     status: "initial", // running, error, won
     turn: "initial", // user
     turnedOn: false,
     strict: false,
     count: 0,
-    sounds: []
+    sounds: [],
+    userPressed: [],
   }
 
+  let state = Object.assign({}, defaultState);
+
   function playAudio(a) {
-    console.log(state);
     return a.play();
   }
 
-  function userClick(a) {
+  function whatUserPressed(pressedButton) {
+    switch(pressedButton.classList[1]) {
+      case "green-block":
+        state.userPressed.push(1);
+        break;
+      case "red-block":
+        state.userPressed.push(2);
+        break;
+       case "yellow-block":
+        state.userPressed.push(3);
+        break;
+       case "blue-block":
+        state.userPressed.push(4);
+        break;              
+    }
+    
+    if(state.userPressed.length === state.count+1) {
+      if(checkUserSounds()) {
+        state.count += 1;
+        countdisplay.innerHTML = state.count + 1;
+        state.userPressed = [];
+        state.turn = "machine";
+        setTimeout(() => { presentSounds(state.count); }, 1000);
+      } else {
+        state.userPressed = [];
+        info.innerHTML = "!!!Error!!!";
+        state.turn = "machine";
+        setTimeout(() => { presentSounds(state.count); }, 1000);
+      }
+    }
+  }
+
+  function checkUserSounds() {
+    for(let i = 0; i <= state.count; i++) {
+      if(state.userPressed[i] != state.sounds[i]) {
+        
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  function userClick(a, pressedButton) {
     if(state.turn == "user") {
       a.play();
+      whatUserPressed(pressedButton);
       return true;
     }
+
     return false;
   }
 
@@ -76,22 +125,28 @@
     }
   }
 //wrap up in another function
-  function presentSounds (i) {
-    ++state.count;
+function presentSounds(i) {
+  let a = 0;
+  info.innerHTML = "";
+  function recurseSounds () {
     setTimeout(function () {
-      whichSound(state.sounds[i]);
-      if (--i) {          
-        presentSounds(i);       
+      whichSound(state.sounds[a]);
+      if (a < i) {      
+        a++;    
+        recurseSounds(a);       
       }
     }, 700);
-  }
+  } 
+  recurseSounds(); 
+  state.turn = "user";
+}  
+
 
   // attaching events 
 
   function onOffHandle() {
     state.turnedOn = state.turnedOn == false ? true : false;
     if(!state.turnedOn) {
-     state.status = "initial";
      document.querySelector(".startbutton").classList.remove("started");
      document.querySelector(".startbutton").value = "Start";
     }
@@ -99,14 +154,18 @@
   }
 
   function start() {
-    if(state.turnedOn) {
+    if(state.turnedOn === true) {
+      state = Object.assign({}, defaultState);
+      state.turnedOn = true;
       state.status = "running";
       document.querySelector(".startbutton").classList.add("started");
       document.querySelector(".startbutton").value = "Restart";
       state.sounds = [];
       getRandomSounds();
-      presentSounds(1);
+      presentSounds(0);
+      countdisplay.innerHTML = state.count + 1;
       state.turn = "user";
+      console.log(state);
     }
     return;
   }
@@ -117,26 +176,26 @@
 
   greenBlock.addEventListener("click", (e) => {
     
-    if(userClick(audioGreen)) {
+    if(userClick(audioGreen, e.target)) {
       lightUp(e.target);
     }
   
   });
 
   redBlock.addEventListener("click", (e) => {
-    if(userClick(audioRed)) {
+    if(userClick(audioRed, e.target)) {
       lightUp(e.target);
     }
   });
 
   yellowBlock.addEventListener("click", (e) => {
-    if(userClick(audioYellow)) {
+    if(userClick(audioYellow, e.target)) {
       lightUp(e.target);
     }
   });
 
   blueBlock.addEventListener("click", (e) => {
-    if(userClick(audioBlue)) {
+    if(userClick(audioBlue, e.target)) {
       lightUp(e.target);
     }
   });
