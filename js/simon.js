@@ -32,6 +32,44 @@
     return a.play();
   }
 
+  function checkWin() {
+    if(checkUserSounds()) {
+        if(state.count+1 === state.sounds.length) {
+          info.innerHTML = "You won!";
+          let state = Object.assign({}, defaultState);
+          return true;
+        } else if(state.count+1 == state.userPressed.length){
+          state.count += 1;
+          countdisplay.innerHTML = state.count + 1;
+          state.userPressed = [];
+          state.turn = "machine";
+          setTimeout(() => { presentSounds(state.count); }, 1000); 
+          return true;          
+        }
+    } else {
+      return "error";
+    } 
+   
+
+  }
+
+  function checkError() {
+    if(state.strict === true) {
+      state.userPressed = [];
+      state.count = 0;
+      countdisplay.innerHTML = 1;
+      info.innerHTML = "!!!Error!!!";
+      state.turn = "machine";
+      setTimeout(() => { presentSounds(state.count); }, 1000);     
+    } else {
+      state.userPressed = [];
+      info.innerHTML = "!!!Error!!!";
+      state.turn = "machine";
+      setTimeout(() => { presentSounds(state.count); }, 1000);  
+    }
+
+  }
+
   function whatUserPressed(pressedButton) {
     switch(pressedButton.classList[1]) {
       case "green-block":
@@ -48,35 +86,23 @@
         break;              
     }
     
-    if(state.userPressed.length === state.count+1) {
-      if(checkUserSounds()) {
-        state.count += 1;
-        countdisplay.innerHTML = state.count + 1;
-        state.userPressed = [];
-        state.turn = "machine";
-        setTimeout(() => { presentSounds(state.count); }, 1000);
-      } else {
-        state.userPressed = [];
-        info.innerHTML = "!!!Error!!!";
-        state.turn = "machine";
-        setTimeout(() => { presentSounds(state.count); }, 1000);
+      if(checkWin() == "error") {
+        checkError();
       }
-    }
   }
 
+
   function checkUserSounds() {
-    for(let i = 0; i <= state.count; i++) {
+    for(let i = 0; i < state.count+1 && i < state.userPressed.length; i++) {
       if(state.userPressed[i] != state.sounds[i]) {
-        
         return false;
-      }
+      } 
     }
-    
-    return true;
+      return true;
   }
 
   function userClick(a, pressedButton) {
-    if(state.turn == "user") {
+    if(state.turn == "user" && state.turnedOn) {
       a.play();
       whatUserPressed(pressedButton);
       return true;
@@ -153,13 +179,19 @@ function presentSounds(i) {
     return state.turnedOn;
   }
 
+
+
   function start() {
     if(state.turnedOn === true) {
       state = Object.assign({}, defaultState);
       state.turnedOn = true;
       state.status = "running";
+
+      state.strict = document.querySelector("#strict").checked == true;
+
       document.querySelector(".startbutton").classList.add("started");
       document.querySelector(".startbutton").value = "Restart";
+
       state.sounds = [];
       getRandomSounds();
       presentSounds(0);
